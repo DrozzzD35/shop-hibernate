@@ -3,11 +3,13 @@ package com.shop.hibernate.repository;
 import com.shop.hibernate.model.Category;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class CategoryRepository implements CategoryDao {
 
@@ -25,10 +27,9 @@ public class CategoryRepository implements CategoryDao {
         try {
             entityManager.persist(category);
             return category;
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Ошибка при создании категории");
         }
-
 
 //        if (category.getId() == 0) {
 //            entityManager.persist(category);
@@ -40,8 +41,8 @@ public class CategoryRepository implements CategoryDao {
 
     @Override
     public void deleteCategory(Category category) {
-        Optional<Category> deleteCategory = findCategoryById(category.getId());
-        entityManager.remove(deleteCategory);
+        Optional<Category> optionalCategory = findCategoryById(category.getId());
+        optionalCategory.ifPresent(entityManager::remove);
     }
 
     @Override
