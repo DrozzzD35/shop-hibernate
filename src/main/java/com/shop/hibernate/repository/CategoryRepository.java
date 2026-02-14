@@ -24,19 +24,11 @@ public class CategoryRepository implements CategoryDao {
 
     @Override
     public Category createCategory(Category category) {
-        try {
-            entityManager.persist(category);
-            return category;
-        } catch (Exception e) {
+        if (category.getId() == 0) {
             throw new RuntimeException("Ошибка при создании категории");
         }
-
-//        if (category.getId() == 0) {
-//            entityManager.persist(category);
-//            return category;
-//        } else {
-//            return null;
-//        }
+        entityManager.persist(category);
+        return category;
     }
 
     @Override
