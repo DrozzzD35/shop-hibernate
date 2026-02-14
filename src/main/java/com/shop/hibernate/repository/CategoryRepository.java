@@ -19,7 +19,7 @@ public class CategoryRepository implements CategoryDao {
     @Override
     public Optional<Category> findCategoryById(long id) {
         Category category = entityManager.find(Category.class, id);
-        return Optional.ofNullable(category);
+        return   Optional.ofNullable(category);
     }
 
     @Override
