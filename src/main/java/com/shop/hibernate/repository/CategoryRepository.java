@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Repository
 public class CategoryRepository implements CategoryDao {
 
@@ -24,7 +23,7 @@ public class CategoryRepository implements CategoryDao {
 
     @Override
     public Category createCategory(Category category) {
-        if (category.getId() == 0) {
+        if (category.getId() != 0) {
             throw new RuntimeException("Ошибка при создании категории");
         }
         entityManager.persist(category);

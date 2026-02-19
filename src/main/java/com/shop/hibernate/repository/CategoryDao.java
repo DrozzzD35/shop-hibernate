@@ -1,6 +1,7 @@
 package com.shop.hibernate.repository;
 
 import com.shop.hibernate.model.Category;
+import com.shop.hibernate.model.Product;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +17,5 @@ public interface CategoryDao {
     List<Category> findAllCategories();
 
     Optional<Category> updateCategory(Category category);
+
 }
