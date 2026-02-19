@@ -22,6 +22,9 @@ public class ShopService {
 
     @Transactional
     public Product createProduct(Product product) {
+        long categoryId = product.getCategory().getId();
+        Category categoryInBase = findCategoryById(categoryId);
+        product.setCategory(categoryInBase);
         return productDao.createProduct(product);
     }
 
@@ -43,6 +46,10 @@ public class ShopService {
 
     @Transactional
     public Product updateProduct(Product product) {
+        long categoryId = product.getCategory().getId();
+        Category categoryInBase = findCategoryById(categoryId);
+        product.setCategory(categoryInBase);
+
         return productDao.updateProduct(product)
                 .orElseThrow(() -> new RuntimeException("Ошибка при обновлении продукта"));
     }
@@ -68,7 +75,9 @@ public class ShopService {
 
     @Transactional
     public void removeCategory(long id) {
-        categoryDao.deleteCategory(id);
+        Category category = findCategoryById(id);
+        category.setStatus(Status.DELETED);
+        category.setDeletedAt(LocalDateTime.now());
     }
 
     public List<Category> findAllCategories() {

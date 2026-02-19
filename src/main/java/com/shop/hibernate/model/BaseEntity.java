@@ -30,6 +30,10 @@ public abstract class BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
 
+    @Version
+    private Integer version;
+
+
 
 
     @PrePersist
