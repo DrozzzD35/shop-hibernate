@@ -64,7 +64,7 @@ public class ProductRepository implements ProductDao {
     @Override
     public List<Product> findProductByPrice(BigDecimal price) {
         return manager
-                .createQuery("SELECT p FROM Product p WHERE p.price > :price", Product.class)
+                .createQuery("SELECT p FROM Product p WHERE p.price >= :price", Product.class)
                 .setParameter("price", price)
                 .getResultList();
     }

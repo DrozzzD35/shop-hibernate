@@ -1,10 +1,10 @@
 package com.shop.hibernate.controller;
 
-import com.shop.hibernate.dto.CategoryProductsDto;
+import com.shop.hibernate.dto.CategoryWithProductsDto;
+import com.shop.hibernate.dto.ProductWithoutCategoryDto;
 import com.shop.hibernate.model.Category;
 import com.shop.hibernate.model.Product;
 import com.shop.hibernate.service.ShopService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -43,13 +43,13 @@ public class ShopController {
         return service.updateProduct(product);
     }
 
-    @GetMapping("/category/products")
-    public List<Product> findProductsByCategory(@RequestBody Category category) {
-        return service.findProductsByCategory(category);
+    @GetMapping("/category/products/{id}")
+    public List<Product> findProductsByCategory(@PathVariable long id) {
+        return service.findProductsByCategory(id);
     }
 
     @GetMapping("/products/price")
-    public List<Product> findProductByPrice(@RequestBody BigDecimal price) {
+    public List<Product> findProductByPrice(@RequestParam BigDecimal price) {
         return service.findProductByPrice(price);
     }
 
@@ -79,14 +79,13 @@ public class ShopController {
         return service.updateCategory(category);
     }
 
-    @PostMapping("/category")
+    @PostMapping("/category/product")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category createCategoryWithProducts(CategoryProductsDto categoryProductsDto) {
-        Category category = categoryProductsDto.getCategory();
-        List<Product> products = categoryProductsDto.getProducts();
+    public Category createCategoryWithProducts(@RequestBody CategoryWithProductsDto categoryWithProductsDto) {
+        Category category = categoryWithProductsDto.getCategory();
+        List<ProductWithoutCategoryDto> products = categoryWithProductsDto.getProducts();
 
         return service.createCategoryWithProducts(category, products);
-
     }
 
 

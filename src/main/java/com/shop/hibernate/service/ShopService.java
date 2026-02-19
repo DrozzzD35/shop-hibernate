@@ -1,5 +1,7 @@
 package com.shop.hibernate.service;
 
+import com.shop.hibernate.dto.ProductWithoutCategoryDto;
+import com.shop.hibernate.enums.Status;
 import com.shop.hibernate.model.Category;
 import com.shop.hibernate.model.Product;
 import com.shop.hibernate.repository.CategoryDao;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,7 +32,9 @@ public class ShopService {
 
     @Transactional
     public void removeProduct(long id) {
-        productDao.deleteProduct(id);
+        Product product = getProduct(id);
+        product.setStatus(Status.DELETED);
+        product.setDeletedAt(LocalDateTime.now());
     }
 
     public List<Product> findAllProducts() {
@@ -42,8 +47,9 @@ public class ShopService {
                 .orElseThrow(() -> new RuntimeException("Ошибка при обновлении продукта"));
     }
 
-    public List<Product> findProductsByCategory(Category category) {
-        return productDao.findProductsByCategory(category);
+    public List<Product> findProductsByCategory(long categoryId) {
+        Category foundCategory = findCategoryById(categoryId);
+        return productDao.findProductsByCategory(foundCategory);
     }
 
     public List<Product> findProductByPrice(BigDecimal price) {
@@ -76,11 +82,12 @@ public class ShopService {
     }
 
     @Transactional
-    public Category createCategoryWithProducts(Category category, List<Product> products) {
+    public Category createCategoryWithProducts(Category category, List<ProductWithoutCategoryDto> products) {
         Category createdCategory = createCategory(category);
 
-        for (Product product: products){
-            product.setCategory(createdCategory);
+        for (ProductWithoutCategoryDto productDto : products) {
+            Product product = new Product
+                    (productDto.getName(), productDto.getPrice(), createdCategory);
             productDao.createProduct(product);
         }
 

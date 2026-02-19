@@ -1,18 +1,17 @@
 package com.shop.hibernate.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "products")
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@NoArgsConstructor
+@AllArgsConstructor
+public class Product extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     private String name;
