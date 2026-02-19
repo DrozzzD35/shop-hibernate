@@ -33,8 +33,9 @@ public class ProductRepository implements ProductDao {
     }
 
     @Override
-    public void deleteProduct(Product product) {
-        manager.remove(product);
+    public void deleteProduct(long id) {
+        Optional<Product> product = findProductById(id);
+        product.ifPresent(manager::remove);
     }
 
     @Override
@@ -44,12 +45,12 @@ public class ProductRepository implements ProductDao {
 
     @Override
     public Optional<Product> updateProduct(Product product) {
-        if (product.getId() > 0) {
-            throw new RuntimeException("Ошибка при обновлении товара, товар уже существует");
+        if (product.getId() == 0) {
+            throw new RuntimeException("Ошибка при обновлении товара, товар не существует");
         }
 
-        manager.merge(product);
-        return Optional.of(product);
+        Product updatedProduct = manager.merge(product);
+        return Optional.of(updatedProduct);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ProductRepository implements ProductDao {
     @Override
     public List<Product> findProductByPrice(BigDecimal price) {
         return manager
-                .createQuery("SELECT p FROM Product p WHERE p.price = :price", Product.class)
+                .createQuery("SELECT p FROM Product p WHERE p.price > :price", Product.class)
                 .setParameter("price", price)
                 .getResultList();
     }

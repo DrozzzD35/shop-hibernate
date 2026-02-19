@@ -31,8 +31,8 @@ public class CategoryRepository implements CategoryDao {
     }
 
     @Override
-    public void deleteCategory(Category category) {
-        Optional<Category> optionalCategory = findCategoryById(category.getId());
+    public void deleteCategory(long id) {
+        Optional<Category> optionalCategory = findCategoryById(id);
         optionalCategory.ifPresent(entityManager::remove);
     }
 
