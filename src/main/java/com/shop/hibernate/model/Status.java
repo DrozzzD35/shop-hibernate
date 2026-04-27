@@ -1,4 +1,4 @@
-package com.shop.hibernate.enums;
+package com.shop.hibernate.model;
 
 public enum Status {
     ACTIVE,

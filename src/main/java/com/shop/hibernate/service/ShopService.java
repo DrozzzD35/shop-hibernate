@@ -1,7 +1,7 @@
 package com.shop.hibernate.service;
 
 import com.shop.hibernate.dto.ProductWithoutCategoryDto;
-import com.shop.hibernate.enums.Status;
+import com.shop.hibernate.model.Status;
 import com.shop.hibernate.model.Category;
 import com.shop.hibernate.model.Product;
 import com.shop.hibernate.repository.CategoryDao;
